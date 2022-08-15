@@ -1,47 +1,68 @@
-import { useForm } from 'react-hook-form'
+import useCategorias from "../hooks/useCategorias";
+import useBebidas from "../hooks/useBebidas";
 import {
   FormErrorMessage,
   FormLabel,
   FormControl,
   Input,
   Button,
-} from '@chakra-ui/react'
+  Container,
+  Stack,
+  Select,
+  Flex,
+} from "@chakra-ui/react";
+import Cards from "../components/sections/Cards";
+import { useState } from "react";
+import { Form } from "react-bootstrap";
 
 export default function HookForm() {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm()
+  const [busqueda, setBusqueda] = useState({
+    nombre: "",
+    categoria: "",
+  });
+  const { categorias } = useCategorias();
 
-  function onSubmit(values) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2))
-        resolve()
-      }, 3000)
-    })
-  }
-
+  const handleSubmit = () => {
+    console.log("Hola mundo");
+  };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isInvalid={errors.name}>
-        <FormLabel htmlFor='name'>First name</FormLabel>
-        <Input
-          id='name'
-          placeholder='name'
-          {...register('name', {
-            required: 'This is required',
-            minLength: { value: 4, message: 'Minimum length should be 4' },
-          })}
-        />
-        <FormErrorMessage>
-          {errors.name && errors.name.message}
-        </FormErrorMessage>
+    <Container minH="78.5vh">
+      <FormControl>
+        <Form onSubmit={handleSubmit}>
+          <Flex gap="2" direction={{ base: "column", md: "row" }}>
+            <FormLabel marginTop="2">Select</FormLabel>
+            <Stack flex="1" spacing={3}>
+              <Input placeholder="Name of drink" size="md" />
+            </Stack>
+            <Stack flex="1">
+              <Select
+                id="category"
+                placeholder="Select Category"
+                name="categoria"
+                value={busqueda.categoria}
+                onChange={(e) =>
+                  setBusqueda({
+                    ...busqueda,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+              >
+                {categorias.map((categoria) => (
+                  <option
+                    key={categoria.strCategory}
+                    value={categoria.strCategory}
+                  >
+                    {categoria.strCategory}
+                  </option>
+                ))}
+              </Select>
+              <Button colorScheme="teal" variant="solid" type="buttom">
+                Button
+              </Button>
+            </Stack>
+          </Flex>
+        </Form>
       </FormControl>
-      <Button mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
-        Submit
-      </Button>
-    </form>
-  )
+    </Container>
+  );
 }
