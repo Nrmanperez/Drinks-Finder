@@ -1,68 +1,100 @@
-import useCategorias from "../hooks/useCategorias";
-import useBebidas from "../hooks/useBebidas";
+import useCategorys from "../hooks/useCategorys";
+import { useFormik } from "formik";
+import axios from 'axios'
+import { useState } from 'react'
 import {
-  FormErrorMessage,
-  FormLabel,
   FormControl,
   Input,
   Button,
   Container,
-  Stack,
   Select,
   Flex,
+  FormErrorMessage,
+  Box,
 } from "@chakra-ui/react";
 import Cards from "../components/sections/Cards";
-import { useState } from "react";
-import { Form } from "react-bootstrap";
+import * as Yup from 'yup'
 
 export default function HookForm() {
-  const [busqueda, setBusqueda] = useState({
-    nombre: "",
-    categoria: "",
-  });
-  const { categorias } = useCategorias();
+  const { categorys } = useCategorys();
+  const [drinks, setDrinks] = useState([])
 
-  const handleSubmit = () => {
-    console.log("Hola mundo");
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      category: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required('Name is required'),
+      category: Yup.string().required('Category is required')
+    }),
+    onSubmit: async (values, actions) => {
+      try {
+        const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${values.name}&c=${values.category}`
+
+        const { data } = await axios(url)
+        const { drinks } = data
+        setDrinks(drinks)
+    } catch (error) {
+        console.log(error)
+    }
+      actions.resetForm()
+    }
+  });
+
   return (
     <Container minH="78.5vh">
-      <FormControl>
-        <Form onSubmit={handleSubmit}>
-          <Flex gap="2" direction={{ base: "column", md: "row" }}>
-            <FormLabel marginTop="2">Select</FormLabel>
-            <Stack flex="1" spacing={3}>
-              <Input placeholder="Name of drink" size="md" />
-            </Stack>
-            <Stack flex="1">
-              <Select
-                id="category"
-                placeholder="Select Category"
-                name="categoria"
-                value={busqueda.categoria}
-                onChange={(e) =>
-                  setBusqueda({
-                    ...busqueda,
-                    [e.target.name]: e.target.value,
-                  })
-                }
-              >
-                {categorias.map((categoria) => (
-                  <option
-                    key={categoria.strCategory}
-                    value={categoria.strCategory}
-                  >
-                    {categoria.strCategory}
-                  </option>
-                ))}
-              </Select>
-              <Button colorScheme="teal" variant="solid" type="buttom">
-                Button
-              </Button>
-            </Stack>
-          </Flex>
-        </Form>
-      </FormControl>
+      <form onSubmit={formik.handleSubmit}>
+        <Flex gap="2" direction={{ base: "column", md: "row" }} minWidth='max-content' alignItems='center'>
+          <FormControl isInvalid={formik.errors.name && formik.touched.name}>
+              <Input 
+                placeholder="Name of drink" 
+                borderColor="blue.700" 
+                name="name"
+                type="text"
+                variant="filled"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                onBlur={formik.handleBlur}
+              />
+              <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={formik.errors.category && formik.touched.category}>
+            <Select
+              id="category"
+              placeholder="Select Category"
+              name="category"
+              borderColor="blue.700"
+              onChange={formik.handleChange}
+              value={formik.values.search}
+              onBlur={formik.handleBlur}
+            >
+              {categorys.map((categoria) => (
+                <option
+                  key={categoria.strCategory}
+                  value={categoria.strCategory}
+                >
+                  {categoria.strCategory}
+                </option>
+              ))}
+            </Select>
+            <FormErrorMessage>{formik.errors.category}</FormErrorMessage>
+          </FormControl>
+          <Button type="submit" colorScheme='teal' width="full">
+            Search Drink
+          </Button>
+        </Flex>
+      </form>
+
+        <Box w='100%' p={4} mt={4} color='black'>
+          { drinks.map(drink => (
+              <Cards 
+                key={drink.idDrink}
+                drink={drink}
+              />
+          ))}
+        </Box>
+
     </Container>
   );
 }
