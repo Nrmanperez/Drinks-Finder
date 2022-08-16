@@ -10,7 +10,6 @@ import {
   Select,
   Flex,
   FormErrorMessage,
-  Box,
   HStack,
 } from "@chakra-ui/react";
 import Cards from "../components/sections/Cards";
@@ -115,7 +114,7 @@ export default function HookForm() {
       <HStack w="100vw" p={4} mt={4} color="black">
         <Flex wrap="wrap" justifyContent="space-evenly">
           {drinks.map((drink) => (
-            <Cards key={drink.idDrink} drink={drink} />
+            <Cards key={drink.idDrink} drink={drink} idDrink={drink.idDrink} />
           ))}
         </Flex>
       </HStack>
