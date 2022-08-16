@@ -1,11 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Flex, Text, Button, useColorMode, } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, useColorMode } from "@chakra-ui/react";
 import Logo from "../ui/Logo";
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
-
   return (
     <Text
       mb={{ base: isLast ? 0 : 8, sm: 0 }}
@@ -82,7 +81,7 @@ const Header = (props) => {
           <MenuItem to="/">Home</MenuItem>
           <MenuItem to="/search">Search</MenuItem>
           <Button onClick={toggleColorMode}>
-            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
         </Flex>
       </Box>

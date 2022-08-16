@@ -24,7 +24,6 @@ export default function Cards({ drink, idDrink }) {
       const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`;
       const { data } = await axios(url);
       setRecipe(data.drinks[0]);
-      console.log(data.drinks[0]);
     } catch (error) {
       console.log(error);
     }
@@ -48,21 +47,40 @@ export default function Cards({ drink, idDrink }) {
 
   return (
     <>
-      <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+      <Box
+        maxW="sm"
+        borderWidth="3px"
+        borderRadius="lg"
+        overflow="hidden"
+        marginBottom="10"
+        borderColor="teal"
+        backgroundColor="blackAlpha.500"
+      >
         <Image src={property.imageUrl} alt={property.imageAlt} />
         <Box p="6">
           <Box
             mt="1"
             fontWeight="semibold"
             as="h4"
-            lineHeight="tight"
             noOfLines={1}
+            alignItems="center"
+            fontSize="20px"
+            color="white"
           >
             {property.title}
           </Box>
 
           <Box display="flex" mt="2" alignItems="center">
-            <Button onClick={onOpen}>Open Modal</Button>
+            <Button
+              colorScheme="teal"
+              variant="solid"
+              size="md"
+              height="48px"
+              width="100%"
+              onClick={onOpen}
+            >
+              Show instructions
+            </Button>
           </Box>
         </Box>
       </Box>
