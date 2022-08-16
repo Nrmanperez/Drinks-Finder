@@ -1,7 +1,7 @@
-import useCategorys from "../hooks/useCategorys";
-import { useFormik } from "formik";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import useCategorys from '../hooks/useCategorys'
+import {useFormik} from 'formik'
+import axios from 'axios'
+import {useEffect, useState} from 'react'
 import {
   FormControl,
   Input,
@@ -12,68 +12,70 @@ import {
   FormErrorMessage,
   HStack,
   Spinner,
-} from "@chakra-ui/react";
-import Cards from "../components/sections/Cards";
-import * as Yup from "yup";
+} from '@chakra-ui/react'
+import Cards from '../components/sections/Cards'
+import * as Yup from 'yup'
 
 export default function HookForm() {
-  const { categorys } = useCategorys();
-  const [drinks, setDrinks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const {categorys} = useCategorys()
+  const [drinks, setDrinks] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      category: "",
+      name: '',
+      category: '',
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      category: Yup.string().required("Category is required"),
+      name: Yup.string().required('Name is required'),
+      category: Yup.string().required('Category is required'),
     }),
     onSubmit: async (values, actions) => {
       try {
-        const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${values.name}&c=${values.category}`;
+        const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${values.name}&c=${values.category}`
 
-        const { data } = await axios(url);
-        const { drinks } = data;
-        setDrinks(drinks);
-        setLoading(true);
+        const {data} = await axios(url)
+        const {drinks} = data
+        setDrinks(drinks)
+        setLoading(true)
         setTimeout(() => {
-          setLoading(false);
-        }, [3000]);
+          setLoading(false)
+        }, [3000])
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-      actions.resetForm();
+      actions.resetForm()
     },
-  });
+  })
 
   const random = async () => {
     try {
-      const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=margarita&c=Cocktail`;
+      const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=margarita&c=Cocktail`
 
-      const { data } = await axios(url);
-      const { drinks } = data;
-      setDrinks(drinks);
+      const {data} = await axios(url)
+      const {drinks} = data
+      setDrinks(drinks)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
-    random();
-  }, []);
+    random()
+  }, [])
 
   return (
     <>
       {loading ? (
         <HStack h="75.6vh">
           <Spinner
-            thickness="4px"
+            thickness="15px"
             speed="0.65s"
             emptyColor="gray.200"
             color="blue.500"
             size="xl"
+            w={'100px'}
+            h={'100px'}
           />
         </HStack>
       ) : (
@@ -81,7 +83,7 @@ export default function HookForm() {
           <form onSubmit={formik.handleSubmit}>
             <Flex
               gap="2"
-              direction={{ base: "column", md: "row" }}
+              direction={{base: 'column', md: 'row'}}
               minWidth="max-content"
               alignItems="center"
             >
@@ -89,7 +91,7 @@ export default function HookForm() {
                 isInvalid={formik.errors.name && formik.touched.name}
               >
                 <Input
-                  placeholder="Name of drink"
+                  placeholder="Ex: Vodka, Tequila, etc.."
                   borderColor="blue.700"
                   name="name"
                   type="text"
@@ -145,5 +147,5 @@ export default function HookForm() {
         </HStack>
       )}
     </>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react'
 import {
   Box,
   Image,
@@ -12,30 +12,30 @@ import {
   ModalCloseButton,
   useDisclosure,
   Text,
-} from "@chakra-ui/react";
-import axios from "axios";
+} from '@chakra-ui/react'
+import axios from 'axios'
 
-export default function Cards({ drink, idDrink }) {
-  const [recipe, setRecipe] = useState({});
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function Cards({drink, idDrink}) {
+  const [recipe, setRecipe] = useState({})
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   const getRecipe = async (idDrink) => {
     try {
-      const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`;
-      const { data } = await axios(url);
-      setRecipe(data.drinks[0]);
+      const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`
+      const {data} = await axios(url)
+      setRecipe(data.drinks[0])
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
-    getRecipe(idDrink);
-  }, [idDrink]);
+    getRecipe(idDrink)
+  }, [idDrink])
 
   const property = {
     imageUrl: drink.strDrinkThumb,
-    imageAlt: "Drink",
+    imageAlt: 'Drink',
     title: drink.strDrink,
     imageRecipe: recipe.strDrinkThumb,
     nameRecipe: recipe.strDrink,
@@ -43,7 +43,7 @@ export default function Cards({ drink, idDrink }) {
     ingredientOne: recipe.strIngredient1,
     ingredientTwo: recipe.strIngredient2,
     ingredientThree: recipe.strIngredient3,
-  };
+  }
 
   return (
     <>
@@ -118,5 +118,5 @@ export default function Cards({ drink, idDrink }) {
         </ModalContent>
       </Modal>
     </>
-  );
+  )
 }
