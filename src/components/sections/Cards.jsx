@@ -21,7 +21,7 @@ export default function Cards({drink, idDrink}) {
 
   const getRecipe = async (idDrink) => {
     try {
-      const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`
+      const url = `${import.meta.env.VITE_API_RECIPE_URL}?i=${idDrink}`
       const {data} = await axios(url)
       setRecipe(data.drinks[0])
     } catch (error) {

@@ -8,7 +8,7 @@ const CategorysProvider = ({children}) => {
 
     const getCategorys = async () => {
         try {
-            const url = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'
+            const url = import.meta.env.VITE_API_CATEGORYS_URL
 
             const { data } = await axios(url)
             setCategorys(data.drinks)

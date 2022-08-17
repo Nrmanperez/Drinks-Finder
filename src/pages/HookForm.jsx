@@ -32,7 +32,7 @@ export default function HookForm() {
     }),
     onSubmit: async (values, actions) => {
       try {
-        const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${values.name}&c=${values.category}`
+        const url = `${import.meta.env.VITE_API_DRINKS_URL}?i=${values.name}&c=${values.category}`
 
         const {data} = await axios(url)
         const {drinks} = data
@@ -50,7 +50,7 @@ export default function HookForm() {
 
   const random = async () => {
     try {
-      const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=margarita&c=Cocktail`
+      const url = `${import.meta.env.VITE_API_DRINKS_URL}?i=margarita&c=Cocktail`
 
       const {data} = await axios(url)
       const {drinks} = data
