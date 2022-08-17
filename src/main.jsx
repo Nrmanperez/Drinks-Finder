@@ -6,9 +6,7 @@ import App from "./App";
 import customTheme from "./utils/theme";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <ChakraProvider theme={customTheme}>
       <App />
     </ChakraProvider>
-  </React.StrictMode>
 )

@@ -1,29 +1,15 @@
-import { mode } from '@chakra-ui/theme-tools';
-import { extendTheme } from '@chakra-ui/react';
+// theme.js
 
-const styles = {
-  global: props => ({
-    body: {
-      color: mode('gray.800', 'whiteAlpha.900')(props),
-      bg: mode('gray.100', '#141214')(props),
-    },
-  }),
+// 1. import `extendTheme` function
+import { extendTheme } from "@chakra-ui/react";
+
+// 2. Add your color mode config
+const config = {
+  initialColorMode: "light",
+  useSystemColorMode: false,
 };
 
-const components = {
-  Drawer: {
-    // setup light/dark mode component defaults
-    baseStyle: props => ({
-      dialog: {
-        bg: mode('white', '#141214')(props),
-      },
-    }),
-  },
-};
-
-const theme = extendTheme({
-  components,
-  styles,
-});
+// 3. extend the theme
+const theme = extendTheme({ config });
 
 export default theme;
